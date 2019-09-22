@@ -2,6 +2,7 @@ import { Bytes, BigInt } from "@graphprotocol/graph-ts"
 
 import { LogPayableExchangeIssue } from "../generated/ProxyV2/TokenSetProxyV2"
 import { Set as SetContract } from "../generated/ProxyV2/templates/Set/Set"
+import { Set as SetDataSource } from "../generated/ProxyV2/templates"
 import { Set } from "../generated/schema"
 
 export function handleSetIssue(event: LogPayableExchangeIssue): void {
@@ -18,6 +19,8 @@ export function handleSetIssue(event: LogPayableExchangeIssue): void {
 		set.components = setContract.getComponents() as Array<Bytes>;
 		set.units = setContract.getUnits();
 		set.naturalUnit = setContract.naturalUnit();
+
+		SetDataSource.create(address);
 	}
 	set.save();
 }
