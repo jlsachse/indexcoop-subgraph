@@ -1,4 +1,6 @@
-import { Set, Issuance, Redemption } from "../generated/schema"
+import { Address } from "@graphprotocol/graph-ts"
+
+import { Set, Issuance, Redemption, Rebalance } from "../generated/schema"
 import { Transfer, Set as SetContract }  from "../generated/ProxyV1/templates/Set/Set"
 
 export function handleTransfer(event: Transfer): void {
@@ -23,6 +25,17 @@ export function handleTransfer(event: Transfer): void {
 		let setContract = SetContract.bind(setAddress);
 		set.supply = setContract.totalSupply();
 		set.save();
+
+		if (isSet(to)) {
+			// rebalance settled
+			let rebalances = set.rebalances as Array<String>;
+			let rebalanceId = rebalances[rebalances.length - 1];
+			let rebalance = Rebalance.load(rebalanceId);
+			rebalance.toSet = to.toHexString();
+			rebalance.toAmount = value;
+			rebalance.settleTimestamp = event.block.timestamp;
+			rebalance.save();
+		}
 	}
 	if (to.toHexString() == zeroAddress) {
 		// Burn
@@ -37,5 +50,20 @@ export function handleTransfer(event: Transfer): void {
 		let setContract = SetContract.bind(setAddress);
 		set.supply = setContract.totalSupply();
 		set.save();
+
+		if (isSet(from)) {
+			// rebalance started
+			let rebalance = new Rebalance(id);
+			rebalance.set_ = setAddress.toHexString();
+			rebalance.fromSet = from.toHexString();
+			rebalance.fromAmount = value;
+			rebalance.startTimestamp = event.block.timestamp;
+			rebalance.save();
+		}
 	}
+}
+
+function isSet(address: Address): boolean {
+	let set = Set.load(address.toHexString());
+	return set != null;
 }
