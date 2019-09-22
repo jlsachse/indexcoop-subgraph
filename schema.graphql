@@ -1,0 +1,4 @@
+type Set @entity {
+	id: ID!
+	address: Bytes!
+}
