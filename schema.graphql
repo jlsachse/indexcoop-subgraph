@@ -8,3 +8,19 @@ type Set @entity {
 	units: [BigInt!]
 	naturalUnit: BigInt!
 }
+
+type Issuance @entity {
+	id: ID!
+	set_: Set!
+	account: Bytes!
+	amount: BigInt!
+	timestamp: BigInt!
+}
+
+type Redemption @entity {
+	id: ID!
+	set_: Set!
+	account: Bytes!
+	amount: BigInt!
+	timestamp: BigInt!
+}
