@@ -21,6 +21,25 @@ dataSources:
         - event: LogRebalancingSetIssue(indexed address,indexed address,uint256)
           handler: handleSetIssue
       file: ./src/proxy_v1.ts
+    templates:
+      - name: Set
+        kind: ethereum/contract
+        network: mainnet
+        source:
+          abi: Set
+        mapping:
+          kind: ethereum/events
+          apiVersion: 0.0.3
+          language: wasm/assemblyscript
+          file: ./src/set.ts
+          entities:
+            - Set
+          abis:
+            - name: Set
+              file: ./abis/Set.json
+          eventHandlers:
+            - event: Transfer(indexed address,indexed address,uint256)
+              handler: handleTransfer
   - kind: ethereum/contract
     name: ProxyV2
     network: mainnet
@@ -40,3 +59,22 @@ dataSources:
         - event: LogPayableExchangeIssue(indexed address,indexed address,address,uint256,uint256)
           handler: handleSetIssue
       file: ./src/proxy_v2.ts
+    templates:
+      - name: Set
+        kind: ethereum/contract
+        network: mainnet
+        source:
+          abi: Set
+        mapping:
+          kind: ethereum/events
+          apiVersion: 0.0.3
+          language: wasm/assemblyscript
+          file: ./src/set.ts
+          entities:
+            - Set
+          abis:
+            - name: Set
+              file: ./abis/Set.json
+          eventHandlers:
+            - event: Transfer(indexed address,indexed address,uint256)
+              handler: handleTransfer
