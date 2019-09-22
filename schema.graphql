@@ -1,4 +1,10 @@
 type Set @entity {
 	id: ID!
 	address: Bytes!
+	name: String!
+	symbol: String!
+	supply: BigInt!
+	components: [Bytes!]
+	units: [BigInt!]
+	naturalUnit: BigInt!
 }
