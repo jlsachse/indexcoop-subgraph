@@ -9,10 +9,6 @@ export function handleTransfer(event: Transfer): void {
 	let zeroAddress = '0x0000000000000000000000000000000000000000';
 
 	let setAddress = event.address;
-	let set = Set.load(setAddress.toHexString());
-	let setContract = SetContract.bind(setAddress);
-	set.supply = setContract.totalSupply();
-	set.save();
 
 	if (from.toHexString() == zeroAddress) {
 		// Mint
@@ -22,6 +18,11 @@ export function handleTransfer(event: Transfer): void {
 		issuance.account = to;
 		issuance.timestamp = event.block.timestamp;
 		issuance.save();
+
+		let set = Set.load(setAddress.toHexString());
+		let setContract = SetContract.bind(setAddress);
+		set.supply = setContract.totalSupply();
+		set.save();
 	}
 	if (to.toHexString() == zeroAddress) {
 		// Burn
@@ -31,5 +32,10 @@ export function handleTransfer(event: Transfer): void {
 		redemption.account = from;
 		redemption.timestamp = event.block.timestamp;
 		redemption.save();
+
+		let set = Set.load(setAddress.toHexString());
+		let setContract = SetContract.bind(setAddress);
+		set.supply = setContract.totalSupply();
+		set.save();
 	}
 }
