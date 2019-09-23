@@ -1,6 +1,6 @@
 import { Address } from "@graphprotocol/graph-ts"
 
-import { Set, Issuance, Redemption, Rebalance } from "../generated/schema"
+import { TokenSet, Set, Issuance, Redemption, Rebalance } from "../generated/schema"
 import { Transfer, RebalanceStarted, Set as SetContract }  from "../generated/SetCore/templates/Set/Set"
 
 export function handleTransfer(event: Transfer): void {
@@ -66,6 +66,10 @@ export function handleRebalance(event: RebalanceStarted): void {
 		let set = Set.load(setAddress.toHexString());
 		set.components = [ event.params.newSet ];
 		set.save();
+
+		let tokenSet = TokenSet.load(setAddress.toHexString());
+		tokenSet.underlyingSet = event.params.newSet.toHexString();
+		tokenSet.save();
 	}
 }
 

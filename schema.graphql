@@ -1,6 +1,7 @@
 type TokenSet @entity {
 	id: ID!
 	set_: Set!
+	underlyingSet: Set!
 	rebalances: [Rebalance!] @derivedFrom(field: "set_")
 }
 
