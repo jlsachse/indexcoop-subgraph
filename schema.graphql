@@ -1,3 +1,9 @@
+type TokenSet @entity {
+	id: ID!
+	set_: Set!
+	rebalances: [Rebalance!] @derivedFrom(field: "set_")
+}
+
 type Set @entity {
 	id: ID!
 	address: Bytes!
@@ -7,7 +13,6 @@ type Set @entity {
 	components: [Bytes!]
 	units: [BigInt!]
 	naturalUnit: BigInt!
-	rebalances: [Rebalance!] @derivedFrom(field: "set_")
 }
 
 type Issuance @entity {
@@ -28,7 +33,7 @@ type Redemption @entity {
 
 type Rebalance @entity {
 	id: ID!
-	set_: Set!
+	set_: TokenSet!
 	oldSet: Bytes!
 	newSet: Bytes!
 	timestamp: BigInt!
