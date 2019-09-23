@@ -23,27 +23,6 @@ dataSources:
         - event: LogRebalancingSetIssue(indexed address,indexed address,uint256)
           handler: handleSetIssue
       file: ./src/proxy_v1.ts
-    templates:
-      - name: Set
-        kind: ethereum/contract
-        network: mainnet
-        source:
-          abi: Set
-        mapping:
-          kind: ethereum/events
-          apiVersion: 0.0.3
-          language: wasm/assemblyscript
-          file: ./src/set.ts
-          entities:
-            - Set
-          abis:
-            - name: Set
-              file: ./abis/Set.json
-            - name: SetCore
-              file: ./abis/SetCore.json
-          eventHandlers:
-            - event: Transfer(indexed address,indexed address,uint256)
-              handler: handleTransfer
   - kind: ethereum/contract
     name: ProxyV2
     network: mainnet
@@ -65,6 +44,25 @@ dataSources:
         - event: LogPayableExchangeIssue(indexed address,indexed address,address,uint256,uint256)
           handler: handleSetIssue
       file: ./src/proxy_v2.ts
+  - kind: ethereum/contract
+    name: SetCore
+    network: mainnet
+    source:
+      address: "0xf55186CC537E7067EA616F2aaE007b4427a120C8"
+      abi: SetCore
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.3
+      language: wasm/assemblyscript
+      entities:
+        - Set
+      abis:
+        - name: SetCore
+          file: ./abis/SetCore.json
+      eventHandlers:
+        - event: SetTokenCreated(indexed address,address,address[],uint256[],uint256,bytes32,bytes32)
+          handler: handleSetCreated
+      file: ./src/core.ts
     templates:
       - name: Set
         kind: ethereum/contract
@@ -86,22 +84,3 @@ dataSources:
           eventHandlers:
             - event: Transfer(indexed address,indexed address,uint256)
               handler: handleTransfer
-  - kind: ethereum/contract
-    name: SetCore
-    network: mainnet
-    source:
-      address: "0xf55186CC537E7067EA616F2aaE007b4427a120C8"
-      abi: SetCore
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.3
-      language: wasm/assemblyscript
-      entities:
-        - Set
-      abis:
-        - name: SetCore
-          file: ./abis/SetCore.json
-      eventHandlers:
-        - event: SetTokenCreated(indexed address,address,address[],uint256[],uint256,bytes32,bytes32)
-          handler: handleSetCreated
-      file: ./src/core.ts
