@@ -17,8 +17,6 @@ dataSources:
       abis:
         - name: TokenSetProxyV1
           file: ./abis/TokenSetProxyV1.json
-        - name: Set
-          file: ./abis/Set.json
       eventHandlers:
         - event: LogRebalancingSetIssue(indexed address,indexed address,uint256)
           handler: handleSetIssue
@@ -38,8 +36,6 @@ dataSources:
       abis:
         - name: TokenSetProxyV2
           file: ./abis/TokenSetProxyV2.json
-        - name: Set
-          file: ./abis/Set.json
       eventHandlers:
         - event: LogPayableExchangeIssue(indexed address,indexed address,address,uint256,uint256)
           handler: handleSetIssue
@@ -59,6 +55,8 @@ dataSources:
       abis:
         - name: SetCore
           file: ./abis/SetCore.json
+        - name: Set
+          file: ./abis/Set.json
       eventHandlers:
         - event: SetTokenCreated(indexed address,address,address[],uint256[],uint256,bytes32,bytes32)
           handler: handleSetCreated
