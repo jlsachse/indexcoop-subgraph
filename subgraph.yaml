@@ -77,8 +77,6 @@ dataSources:
           abis:
             - name: Set
               file: ./abis/Set.json
-            - name: SetCore
-              file: ./abis/SetCore.json
           eventHandlers:
             - event: Transfer(indexed address,indexed address,uint256)
               handler: handleTransfer
