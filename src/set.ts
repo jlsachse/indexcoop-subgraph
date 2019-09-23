@@ -1,7 +1,7 @@
 import { Address } from "@graphprotocol/graph-ts"
 
 import { Set, Issuance, Redemption, Rebalance } from "../generated/schema"
-import { Transfer, Set as SetContract }  from "../generated/ProxyV1/templates/Set/Set"
+import { Transfer, Set as SetContract }  from "../generated/SetCore/templates/Set/Set"
 import { SetCore as SetCoreContract } from "../generated/SetCore/SetCore"
 
 export function handleTransfer(event: Transfer): void {
@@ -14,21 +14,24 @@ export function handleTransfer(event: Transfer): void {
 	let setAddress = event.address;
 
 	if (from.toHexString() == zeroAddress) {
-		// Mint
-		let issuance = new Issuance(id);
-		issuance.set_ = setAddress.toHexString();
-		issuance.amount = value;
-		issuance.account = to;
-		issuance.timestamp = event.block.timestamp;
-		issuance.save();
+		if (isTokenSet(setAddress)) {
+			// Mint
+			let issuance = new Issuance(id);
+			issuance.set_ = setAddress.toHexString();
+			issuance.amount = value;
+			issuance.account = to;
+			issuance.timestamp = event.block.timestamp;
+			issuance.save();
 
-		let set = Set.load(setAddress.toHexString());
-		let setContract = SetContract.bind(setAddress);
-		set.supply = setContract.totalSupply();
-		set.save();
+			let setContract = SetContract.bind(setAddress);
+			let set = Set.load(setAddress.toHexString());
+			set.supply = setContract.totalSupply();
+			set.save();
+		}
 
 		if (isSet(to)) {
 			// rebalance settled
+			let set = Set.load(setAddress.toHexString());
 			let rebalances = set.rebalances as Array<String>;
 			let rebalanceId = rebalances[rebalances.length - 1];
 			let rebalance = Rebalance.load(rebalanceId);
@@ -39,18 +42,20 @@ export function handleTransfer(event: Transfer): void {
 		}
 	}
 	if (to.toHexString() == zeroAddress) {
-		// Burn
-		let redemption = new Redemption(id);
-		redemption.set_ = setAddress.toHexString();
-		redemption.amount = value;
-		redemption.account = from;
-		redemption.timestamp = event.block.timestamp;
-		redemption.save();
+		if (isTokenSet(setAddress)) {
+			// Burn
+			let redemption = new Redemption(id);
+			redemption.set_ = setAddress.toHexString();
+			redemption.amount = value;
+			redemption.account = from;
+			redemption.timestamp = event.block.timestamp;
+			redemption.save();
 
-		let set = Set.load(setAddress.toHexString());
-		let setContract = SetContract.bind(setAddress);
-		set.supply = setContract.totalSupply();
-		set.save();
+			let setContract = SetContract.bind(setAddress);
+			let set = Set.load(setAddress.toHexString());
+			set.supply = setContract.totalSupply();
+			set.save();
+		}
 
 		if (isSet(from)) {
 			// rebalance started
@@ -74,4 +79,9 @@ function isSet(address: Address): boolean {
 		}
 	}
 	return false;
+}
+
+function isTokenSet(address: Address): boolean {
+	let set = Set.load(address.toHexString());
+	return set != null;
 }

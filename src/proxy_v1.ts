@@ -1,8 +1,7 @@
 import { Bytes, BigInt } from "@graphprotocol/graph-ts"
 
 import { LogRebalancingSetIssue } from "../generated/ProxyV1/TokenSetProxyV1"
-import { Set as SetContract } from "../generated/ProxyV1/templates/Set/Set"
-import { Set as SetDataSource } from "../generated/ProxyV1/templates"
+import { Set as SetContract } from "../generated/SetCore/templates/Set/Set"
 import { Set } from "../generated/schema"
 
 export function handleSetIssue(event: LogRebalancingSetIssue): void {
@@ -19,8 +18,6 @@ export function handleSetIssue(event: LogRebalancingSetIssue): void {
 		set.components = setContract.getComponents() as Array<Bytes>;
 		set.units = setContract.getUnits();
 		set.naturalUnit = setContract.naturalUnit();
-
-		SetDataSource.create(address);
 	}
 	set.save();
 }
