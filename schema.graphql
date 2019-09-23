@@ -32,6 +32,15 @@ type Redemption @entity {
 	timestamp: BigInt!
 }
 
+type Transfer @entity {
+	id: ID!
+	set_: Set!
+	from: Bytes!
+	to: Bytes!
+	value: BigInt!
+	timestamp: BigInt!
+}
+
 type Rebalance @entity {
 	id: ID!
 	set_: TokenSet!

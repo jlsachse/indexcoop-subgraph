@@ -1,9 +1,9 @@
 import { Address } from "@graphprotocol/graph-ts"
 
-import { TokenSet, Set, Issuance, Redemption, Rebalance } from "../generated/schema"
-import { Transfer, RebalanceStarted, Set as SetContract }  from "../generated/SetCore/templates/Set/Set"
+import { TokenSet, Set, Issuance, Redemption, Rebalance, Transfer } from "../generated/schema"
+import { Transfer as TransferEvent, RebalanceStarted, Set as SetContract }  from "../generated/SetCore/templates/Set/Set"
 
-export function handleTransfer(event: Transfer): void {
+export function handleTransfer(event: TransferEvent): void {
 	let id = event.transaction.hash.toHexString() + '-' + event.logIndex.toString();
 	let from = event.params.from;
 	let to  = event.params.to;
@@ -49,6 +49,13 @@ export function handleTransfer(event: Transfer): void {
 	}
 
 	// Transfer
+	let transfer = new Transfer(id);
+	transfer.set_ = setAddress.toHexString();
+	transfer.from = from;
+	transfer.to = to;
+	transfer.value = value;
+	transfer.timestamp = event.block.timestamp;
+	transfer.save();
 }
 
 export function handleRebalance(event: RebalanceStarted): void {
