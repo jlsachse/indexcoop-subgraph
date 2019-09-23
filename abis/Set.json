@@ -358,6 +358,23 @@
     "type": "event"
   },
   {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "name": "oldSet",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "name": "newSet",
+        "type": "address"
+      }
+    ],
+    "name": "RebalanceStarted",
+    "type": "event"
+  },
+  {
     "constant": false,
     "inputs": [
       {
