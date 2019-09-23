@@ -34,7 +34,7 @@ type Redemption @entity {
 type Rebalance @entity {
 	id: ID!
 	set_: TokenSet!
-	oldSet: Bytes!
-	newSet: Bytes!
+	oldSet: Set!
+	newSet: Set!
 	timestamp: BigInt!
 }

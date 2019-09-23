@@ -58,13 +58,13 @@ export function handleRebalance(event: RebalanceStarted): void {
 	if (isTokenSet(setAddress)) {
 		let rebalance = new Rebalance(id);
 		rebalance.set_ = setAddress.toHexString();
-		rebalance.oldSet = event.params.oldSet;
-		rebalance.newSet = event.params.newSet;
+		rebalance.oldSet = event.params.oldSet.toHexString();
+		rebalance.newSet = event.params.newSet.toHexString();
 		rebalance.timestamp = event.block.timestamp;
 		rebalance.save();
 
 		let set = Set.load(setAddress.toHexString());
-		set.components = [ rebalance.newSet ];
+		set.components = [ event.params.newSet ];
 		set.save();
 	}
 }
