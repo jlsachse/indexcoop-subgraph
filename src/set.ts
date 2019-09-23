@@ -57,6 +57,10 @@ export function handleRebalance(event: RebalanceStarted): void {
 		rebalance.newSet = event.params.newSet;
 		rebalance.timestamp = event.block.timestamp;
 		rebalance.save();
+
+		let set = Set.load(setAddress.toHexString());
+		set.components = [ rebalance.newSet ];
+		set.save();
 	}
 }
 
