@@ -12,9 +12,9 @@ export function handleTransfer(event: Transfer): void {
 
 	let setAddress = event.address;
 
+	// Mint
 	if (from.toHexString() == zeroAddress) {
 		if (isTokenSet(setAddress)) {
-			// Mint
 			let issuance = new Issuance(id);
 			issuance.set_ = setAddress.toHexString();
 			issuance.amount = value;
@@ -27,10 +27,12 @@ export function handleTransfer(event: Transfer): void {
 			set.supply = setContract.totalSupply();
 			set.save();
 		}
+		return;
 	}
+
+	// Burn
 	if (to.toHexString() == zeroAddress) {
 		if (isTokenSet(setAddress)) {
-			// Burn
 			let redemption = new Redemption(id);
 			redemption.set_ = setAddress.toHexString();
 			redemption.amount = value;
@@ -43,7 +45,10 @@ export function handleTransfer(event: Transfer): void {
 			set.supply = setContract.totalSupply();
 			set.save();
 		}
+		return;
 	}
+
+	// Transfer
 }
 
 export function handleRebalance(event: RebalanceStarted): void {
