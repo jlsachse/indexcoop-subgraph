@@ -2,6 +2,7 @@ import { Address } from "@graphprotocol/graph-ts"
 
 import { Set, Issuance, Redemption, Rebalance } from "../generated/schema"
 import { Transfer, Set as SetContract }  from "../generated/ProxyV1/templates/Set/Set"
+import { SetCore as SetCoreContract } from "../generated/SetCore/SetCore"
 
 export function handleTransfer(event: Transfer): void {
 	let id = event.transaction.hash.toHexString() + '-' + event.logIndex.toString();
@@ -64,6 +65,13 @@ export function handleTransfer(event: Transfer): void {
 }
 
 function isSet(address: Address): boolean {
-	let set = Set.load(address.toHexString());
-	return set != null;
+	let setCoreAddress = Address.fromString('0xf55186CC537E7067EA616F2aaE007b4427a120C8');
+	let setCoreContract = SetCoreContract.bind(setCoreAddress);
+	let setTokens = setCoreContract.setTokens();
+	for (let i = 0; i < setTokens.length; i++) {
+		if (setTokens[i].toHexString() == address.toHexString()) {
+			return true;
+		}
+	}
+	return false;
 }
