@@ -75,8 +75,10 @@ export function handleRebalance(event: RebalanceStarted): void {
 		set.save();
 
 		let tokenSet = TokenSet.load(setAddress.toHexString());
-		tokenSet.underlyingSet = event.params.newSet.toHexString();
-		tokenSet.save();
+		if (tokenSet) {
+			tokenSet.underlyingSet = event.params.newSet.toHexString();
+			tokenSet.save();
+		}
 	}
 }
 
