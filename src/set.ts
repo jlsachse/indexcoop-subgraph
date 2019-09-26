@@ -87,15 +87,6 @@ export function handleRebalanceStart(event: RebalanceStarted): void {
 	}
 }
 
-export function handleRebalanceSettle(call: SettleRebalanceCall): void {
-	let setAddress = call.to;
-
-	let setContract = SetContract.bind(setAddress);
-	let set = Set.load(setAddress.toHexString());
-	set.units = setContract.getUnits();
-	set.save();
-}
-
 function isTokenSet(address: Address): boolean {
 	let set = Set.load(address.toHexString());
 	return set != null;
