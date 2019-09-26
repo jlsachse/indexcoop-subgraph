@@ -88,6 +88,6 @@ export function handleRebalanceStart(event: RebalanceStarted): void {
 }
 
 function isTokenSet(address: Address): boolean {
-	let set = Set.load(address.toHexString());
+	let set = TokenSet.load(address.toHexString());
 	return set != null;
 }
