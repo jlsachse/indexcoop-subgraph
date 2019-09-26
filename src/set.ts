@@ -17,6 +17,13 @@ export function handleTransfer(event: TransferEvent): void {
 
 	let setAddress = event.address;
 
+	if (isTokenSet(setAddress)) {
+		let setContract = SetContract.bind(setAddress);
+		let set = Set.load(setAddress.toHexString());
+		set.units = setContract.getUnits();
+		set.save();
+	}
+
 	// Mint
 	if (from.toHexString() == zeroAddress) {
 		if (isTokenSet(setAddress)) {
