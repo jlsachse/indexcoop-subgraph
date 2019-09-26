@@ -411,6 +411,24 @@
     "type": "function"
   },
   {
+    "constant": false,
+    "inputs": [],
+    "name": "startRebalance",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [],
+    "name": "settleRebalance",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "constant": true,
     "inputs": [],
     "name": "getComponents",

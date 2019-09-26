@@ -1,7 +1,12 @@
 import { Address, BigInt } from "@graphprotocol/graph-ts"
 
 import { TokenSet, Set, Issuance, Redemption, Rebalance, Transfer } from "../generated/schema"
-import { Transfer as TransferEvent, RebalanceStarted, Set as SetContract }  from "../generated/SetCore/templates/Set/Set"
+import {
+	Transfer as TransferEvent,
+	RebalanceStarted,
+	SettleRebalanceCall,
+	Set as SetContract,
+}  from "../generated/SetCore/templates/Set/Set"
 
 export function handleTransfer(event: TransferEvent): void {
 	let id = event.transaction.hash.toHexString() + '-' + event.logIndex.toString();
@@ -25,14 +30,6 @@ export function handleTransfer(event: TransferEvent): void {
 			let setContract = SetContract.bind(setAddress);
 			let set = Set.load(setAddress.toHexString());
 			set.supply = setContract.totalSupply();
-			set.save();
-		}
-
-		if (isTokenSet(to)) {
-			// Rebalance settled
-			let setContract = SetContract.bind(to);
-			let set = Set.load(to.toHexString());
-			set.units = [ setContract.units(new BigInt(0)) ];
 			set.save();
 		}
 		return;
@@ -66,7 +63,7 @@ export function handleTransfer(event: TransferEvent): void {
 	transfer.save();
 }
 
-export function handleRebalance(event: RebalanceStarted): void {
+export function handleRebalanceStart(event: RebalanceStarted): void {
 	let id = event.transaction.hash.toHexString() + '-' + event.logIndex.toString();
 	let setAddress = event.address;
 
@@ -88,6 +85,15 @@ export function handleRebalance(event: RebalanceStarted): void {
 			tokenSet.save();
 		}
 	}
+}
+
+export function handleRebalanceSettle(call: SettleRebalanceCall): void {
+	let setAddress = call.to;
+
+	let setContract = SetContract.bind(setAddress);
+	let set = Set.load(setAddress.toHexString());
+	set.units = setContract.getUnits();
+	set.save();
 }
 
 function isTokenSet(address: Address): boolean {

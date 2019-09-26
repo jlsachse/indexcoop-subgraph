@@ -81,4 +81,7 @@ dataSources:
             - event: Transfer(indexed address,indexed address,uint256)
               handler: handleTransfer
             - event: RebalanceStarted(address,address)
-              handler: handleRebalance
+              handler: handleRebalanceStart
+          callHandlers:
+            - function: settleRebalance()
+              handler: handleRebalanceSettle
