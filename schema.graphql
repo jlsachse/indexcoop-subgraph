@@ -14,6 +14,8 @@ type Set @entity {
 	components: [Bytes!]
 	units: [BigInt!]
 	naturalUnit: BigInt!
+	issuances: [Issuance!] @derivedFrom(field: "set_")
+	redemptions: [Redemption!] @derivedFrom(field: "set_")
 }
 
 type Issuance @entity {
