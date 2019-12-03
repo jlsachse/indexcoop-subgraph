@@ -1,6 +1,6 @@
 import { Address, BigInt } from "@graphprotocol/graph-ts"
 
-import { TokenSet, Set, Issuance, Redemption, Rebalance, Transfer } from "../generated/schema"
+import { TokenSet, Set, Issuance, Redemption, Rebalance, Transfer, Balance, User } from "../generated/schema"
 import {
 	Transfer as TransferEvent,
 	RebalanceStarted,
@@ -8,13 +8,13 @@ import {
 	Set as SetContract,
 }  from "../generated/templates/Set/Set";
 
+let zeroAddress = Address.fromString('0x0000000000000000000000000000000000000000');
 
 export function handleTransfer(event: TransferEvent): void {
 	let id = event.transaction.hash.toHexString() + '-' + event.logIndex.toString();
 	let from = event.params.from;
 	let to  = event.params.to;
 	let value = event.params.value;
-	let zeroAddress = '0x0000000000000000000000000000000000000000';
 
 	let setAddress = event.address;
 
@@ -26,7 +26,7 @@ export function handleTransfer(event: TransferEvent): void {
 	}
 
 	// Mint
-	if (from.toHexString() == zeroAddress) {
+	if (from == zeroAddress) {
 		if (isTokenSet(setAddress)) {
 			let issuance = new Issuance(id);
 			issuance.set_ = setAddress.toHexString();
@@ -44,7 +44,7 @@ export function handleTransfer(event: TransferEvent): void {
 	}
 
 	// Burn
-	if (to.toHexString() == zeroAddress) {
+	if (to == zeroAddress) {
 		if (isTokenSet(setAddress)) {
 			let redemption = new Redemption(id);
 			redemption.set_ = setAddress.toHexString();
@@ -69,6 +69,47 @@ export function handleTransfer(event: TransferEvent): void {
 	transfer.value = value;
 	transfer.timestamp = event.block.timestamp;
 	transfer.save();
+
+	// Balances
+	if (from != zeroAddress) {
+		if (isTokenSet(setAddress)) {
+			let user = User.load(from.toHexString());
+			if (!user) {
+				user = new User(from.toHexString());
+			}
+			user.save();
+
+			let balanceId = from.toHexString() + '-' + setAddress.toHexString();
+			let balance = Balance.load(balanceId);
+			if (!balance) {
+				balance.set_ = setAddress.toHexString();
+				balance.user = from.toHexString();
+				balance.balance = new BigInt(0);
+			}
+			balance.balance -= value;
+			balance.save();
+		}
+	}
+
+	if (to != zeroAddress) {
+		if (isTokenSet(setAddress)) {
+			let user = User.load(from.toHexString());
+			if (!user) {
+				user = new User(from.toHexString());
+			}
+			user.save();
+
+			let balanceId = from.toHexString() + '-' + setAddress.toHexString();
+			let balance = Balance.load(balanceId);
+			if (!balance) {
+				balance.set_ = setAddress.toHexString();
+				balance.user = from.toHexString();
+				balance.balance = new BigInt(0);
+			}
+			balance.balance += value;
+			balance.save();
+		}
+	}
 }
 
 export function handleRebalanceStart(event: RebalanceStarted): void {
