@@ -50,3 +50,15 @@ type Rebalance @entity {
 	newSet: Set!
 	timestamp: BigInt!
 }
+
+type Balance @entity {
+	id: ID!
+	set_: TokenSet!
+	user: User!
+	balance: BigInt!
+}
+
+type User @entity {
+	id: ID!
+	balances: [Balance!] @derivedFrom(field: "user")
+}
