@@ -6,7 +6,8 @@ import {
 	RebalanceStarted,
 	SettleRebalanceCall,
 	Set as SetContract,
-}  from "../generated/SetCore/templates/Set/Set"
+}  from "../generated/templates/Set/Set";
+
 
 export function handleTransfer(event: TransferEvent): void {
 	let id = event.transaction.hash.toHexString() + '-' + event.logIndex.toString();

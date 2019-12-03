@@ -1,6 +1,27 @@
-specVersion: 0.0.1
+specVersion: 0.0.2
 schema:
   file: ./schema.graphql
+templates:
+  - name: Set
+    kind: ethereum/contract
+    network: mainnet
+    source:
+      abi: Set
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.3
+      language: wasm/assemblyscript
+      file: ./src/set.ts
+      entities:
+        - Set
+      abis:
+        - name: Set
+          file: ./abis/Set.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+        - event: RebalanceStarted(address,address)
+          handler: handleRebalanceStart
 dataSources:
   - kind: ethereum/contract
     name: ProxyV1
@@ -61,24 +82,3 @@ dataSources:
         - event: SetTokenCreated(indexed address,address,address[],uint256[],uint256,bytes32,bytes32)
           handler: handleSetCreated
       file: ./src/core.ts
-    templates:
-      - name: Set
-        kind: ethereum/contract
-        network: mainnet
-        source:
-          abi: Set
-        mapping:
-          kind: ethereum/events
-          apiVersion: 0.0.3
-          language: wasm/assemblyscript
-          file: ./src/set.ts
-          entities:
-            - Set
-          abis:
-            - name: Set
-              file: ./abis/Set.json
-          eventHandlers:
-            - event: Transfer(indexed address,indexed address,uint256)
-              handler: handleTransfer
-            - event: RebalanceStarted(address,address)
-              handler: handleRebalanceStart

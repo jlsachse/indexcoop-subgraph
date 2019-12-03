@@ -1,8 +1,8 @@
 import { Bytes } from "@graphprotocol/graph-ts"
 
 import { SetTokenCreated }  from "../generated/SetCore/SetCore"
-import { Set as SetContract } from "../generated/SetCore/templates/Set/Set"
-import { Set as SetDataSource } from "../generated/SetCore/templates"
+import { Set as SetContract } from "../generated/templates/Set/Set"
+import { Set as SetDataSource } from "../generated/templates"
 import { Set } from "../generated/schema"
 
 export function handleSetCreated(event: SetTokenCreated): void {
