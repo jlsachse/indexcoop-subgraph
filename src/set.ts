@@ -82,6 +82,7 @@ export function handleTransfer(event: TransferEvent): void {
 			let balanceId = from.toHexString() + '-' + setAddress.toHexString();
 			let balance = Balance.load(balanceId);
 			if (!balance) {
+				balance = new Balance(balanceId);
 				balance.set_ = setAddress.toHexString();
 				balance.user = from.toHexString();
 				balance.balance = new BigInt(0);
@@ -93,17 +94,18 @@ export function handleTransfer(event: TransferEvent): void {
 
 	if (to != zeroAddress) {
 		if (isTokenSet(setAddress)) {
-			let user = User.load(from.toHexString());
+			let user = User.load(to.toHexString());
 			if (!user) {
-				user = new User(from.toHexString());
+				user = new User(to.toHexString());
 			}
 			user.save();
 
-			let balanceId = from.toHexString() + '-' + setAddress.toHexString();
+			let balanceId = to.toHexString() + '-' + setAddress.toHexString();
 			let balance = Balance.load(balanceId);
 			if (!balance) {
+				balance = new Balance(balanceId);
 				balance.set_ = setAddress.toHexString();
-				balance.user = from.toHexString();
+				balance.user = to.toHexString();
 				balance.balance = new BigInt(0);
 			}
 			balance.balance += value;
