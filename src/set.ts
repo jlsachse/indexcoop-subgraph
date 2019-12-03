@@ -40,7 +40,6 @@ export function handleTransfer(event: TransferEvent): void {
 			set.supply = setContract.totalSupply();
 			set.save();
 		}
-		return;
 	}
 
 	// Burn
@@ -58,17 +57,18 @@ export function handleTransfer(event: TransferEvent): void {
 			set.supply = setContract.totalSupply();
 			set.save();
 		}
-		return;
 	}
 
 	// Transfer
-	let transfer = new Transfer(id);
-	transfer.set_ = setAddress.toHexString();
-	transfer.from = from;
-	transfer.to = to;
-	transfer.value = value;
-	transfer.timestamp = event.block.timestamp;
-	transfer.save();
+	if (from != zeroAddress && to != zeroAddress) {
+		let transfer = new Transfer(id);
+		transfer.set_ = setAddress.toHexString();
+		transfer.from = from;
+		transfer.to = to;
+		transfer.value = value;
+		transfer.timestamp = event.block.timestamp;
+		transfer.save();
+	}
 
 	// Balances
 	if (from != zeroAddress) {
