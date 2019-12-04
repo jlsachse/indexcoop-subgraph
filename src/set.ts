@@ -40,12 +40,11 @@ export function handleTransfer(event: TransferEvent): void {
 			issuance.account = to;
 			issuance.timestamp = event.block.timestamp;
 			issuance.save();
-
-			let setContract = SetContract.bind(setAddress);
-			let set = Set.load(setAddress.toHexString());
-			set.supply = setContract.totalSupply();
-			set.save();
 		}
+
+		let set = Set.load(setAddress.toHexString());
+		set.supply += value;
+		set.save();
 	}
 
 	// Burn
@@ -57,12 +56,11 @@ export function handleTransfer(event: TransferEvent): void {
 			redemption.account = from;
 			redemption.timestamp = event.block.timestamp;
 			redemption.save();
-
-			let setContract = SetContract.bind(setAddress);
-			let set = Set.load(setAddress.toHexString());
-			set.supply = setContract.totalSupply();
-			set.save();
 		}
+
+		let set = Set.load(setAddress.toHexString());
+		set.supply -= value;
+		set.save();
 	}
 
 	// Transfer
