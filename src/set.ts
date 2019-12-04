@@ -33,14 +33,12 @@ export function handleTransfer(event: TransferEvent): void {
 
 	// Mint
 	if (from == zeroAddress) {
-		if (isTokenSet(setAddress)) {
-			let issuance = new Issuance(id);
-			issuance.set_ = setAddress.toHexString();
-			issuance.amount = value;
-			issuance.account = to;
-			issuance.timestamp = event.block.timestamp;
-			issuance.save();
-		}
+		let issuance = new Issuance(id);
+		issuance.set_ = setAddress.toHexString();
+		issuance.amount = value;
+		issuance.account = to;
+		issuance.timestamp = event.block.timestamp;
+		issuance.save();
 
 		let set = Set.load(setAddress.toHexString());
 		set.supply += value;
@@ -49,14 +47,12 @@ export function handleTransfer(event: TransferEvent): void {
 
 	// Burn
 	if (to == zeroAddress) {
-		if (isTokenSet(setAddress)) {
-			let redemption = new Redemption(id);
-			redemption.set_ = setAddress.toHexString();
-			redemption.amount = value;
-			redemption.account = from;
-			redemption.timestamp = event.block.timestamp;
-			redemption.save();
-		}
+		let redemption = new Redemption(id);
+		redemption.set_ = setAddress.toHexString();
+		redemption.amount = value;
+		redemption.account = from;
+		redemption.timestamp = event.block.timestamp;
+		redemption.save();
 
 		let set = Set.load(setAddress.toHexString());
 		set.supply -= value;
