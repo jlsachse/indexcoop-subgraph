@@ -1,4 +1,4 @@
-import { Address, BigInt, Bytes } from "@graphprotocol/graph-ts"
+import { Address, BigInt } from "@graphprotocol/graph-ts"
 
 import { TokenSet, Set, Issuance, Redemption, Rebalance, Transfer, Balance, User } from "../generated/schema"
 import {
