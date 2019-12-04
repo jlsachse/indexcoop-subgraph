@@ -24,44 +24,6 @@ templates:
           handler: handleRebalanceStart
 dataSources:
   - kind: ethereum/contract
-    name: ProxyV1
-    network: mainnet
-    source:
-      address: "0xcEDA8318522D348f1d1aca48B24629b8FbF09020"
-      abi: TokenSetProxyV1
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.3
-      language: wasm/assemblyscript
-      entities:
-        - Set
-      abis:
-        - name: TokenSetProxyV1
-          file: ./abis/TokenSetProxyV1.json
-      eventHandlers:
-        - event: LogRebalancingSetIssue(indexed address,indexed address,uint256)
-          handler: handleSetIssue
-      file: ./src/proxy_v1.ts
-  - kind: ethereum/contract
-    name: ProxyV2
-    network: mainnet
-    source:
-      address: "0xd4240987D6F92B06c8B5068B1E4006A97c47392b"
-      abi: TokenSetProxyV2
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.3
-      language: wasm/assemblyscript
-      entities:
-        - Set
-      abis:
-        - name: TokenSetProxyV2
-          file: ./abis/TokenSetProxyV2.json
-      eventHandlers:
-        - event: LogPayableExchangeIssue(indexed address,indexed address,address,uint256,uint256)
-          handler: handleSetIssue
-      file: ./src/proxy_v2.ts
-  - kind: ethereum/contract
     name: SetCore
     network: mainnet
     source:
