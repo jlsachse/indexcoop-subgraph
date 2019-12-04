@@ -60,41 +60,45 @@ export function handleTransfer(event: TransferEvent): void {
 
 	// Balances
 	if (from != zeroAddress) {
-		let user = User.load(from.toHexString());
-		if (!user) {
-			user = new User(from.toHexString());
-		}
-		user.save();
+		if (isTokenSet(setAddress)) {
+			let user = User.load(from.toHexString());
+			if (!user) {
+				user = new User(from.toHexString());
+			}
+			user.save();
 
-		let balanceId = from.toHexString() + '-' + setAddress.toHexString();
-		let balance = Balance.load(balanceId);
-		if (!balance) {
-			balance = new Balance(balanceId);
-			balance.set_ = setAddress.toHexString();
-			balance.user = from.toHexString();
-			balance.balance = new BigInt(0);
+			let balanceId = from.toHexString() + '-' + setAddress.toHexString();
+			let balance = Balance.load(balanceId);
+			if (!balance) {
+				balance = new Balance(balanceId);
+				balance.set_ = setAddress.toHexString();
+				balance.user = from.toHexString();
+				balance.balance = new BigInt(0);
+			}
+			balance.balance -= value;
+			balance.save();
 		}
-		balance.balance -= value;
-		balance.save();
 	}
 
 	if (to != zeroAddress) {
-		let user = User.load(to.toHexString());
-		if (!user) {
-			user = new User(to.toHexString());
-		}
-		user.save();
+		if (isTokenSet(setAddress)) {
+			let user = User.load(to.toHexString());
+			if (!user) {
+				user = new User(to.toHexString());
+			}
+			user.save();
 
-		let balanceId = to.toHexString() + '-' + setAddress.toHexString();
-		let balance = Balance.load(balanceId);
-		if (!balance) {
-			balance = new Balance(balanceId);
-			balance.set_ = setAddress.toHexString();
-			balance.user = to.toHexString();
-			balance.balance = new BigInt(0);
+			let balanceId = to.toHexString() + '-' + setAddress.toHexString();
+			let balance = Balance.load(balanceId);
+			if (!balance) {
+				balance = new Balance(balanceId);
+				balance.set_ = setAddress.toHexString();
+				balance.user = to.toHexString();
+				balance.balance = new BigInt(0);
+			}
+			balance.balance += value;
+			balance.save();
 		}
-		balance.balance += value;
-		balance.save();
 	}
 }
 
@@ -129,4 +133,9 @@ export function handleRebalanceSettle(call: SettleRebalanceCall): void {
 	let setContract = SetContract.bind(setAddress);
 	set.units = setContract.getUnits();
 	set.save();
+}
+
+function isTokenSet(address: Address): boolean {
+	let tokenSet = TokenSet.load(address.toHexString());
+	return !!tokenSet;
 }
