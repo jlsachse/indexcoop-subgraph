@@ -29,10 +29,6 @@ export function handleTransfer(event: TransferEvent): void {
 			tokenSet.underlyingSet = components[0].toHexString();
 			tokenSet.save();
 		}
-
-		let setContract = SetContract.bind(setAddress);
-		set.units = setContract.getUnits();
-		set.save();
 	}
 
 	// Mint
@@ -145,6 +141,17 @@ export function handleRebalanceStart(event: RebalanceStarted): void {
 			tokenSet.underlyingSet = event.params.newSet.toHexString();
 			tokenSet.save();
 		}
+	}
+}
+
+export function handleRebalanceSettle(call: SettleRebalanceCall): void {
+	let setAddress = call.to;
+
+	if (isTokenSet(setAddress)) {
+		let set = Set.load(setAddress.toHexString());
+		let setContract = SetContract.bind(setAddress);
+		set.units = setContract.getUnits();
+		set.save();
 	}
 }
 
