@@ -19,18 +19,6 @@ export function handleTransfer(event: TransferEvent): void {
 	let setAddress = event.address;
 	let set = Set.load(setAddress.toHexString());
 
-	if (isTokenSet(setAddress)) {
-		let tokenSet = TokenSet.load(setAddress.toHexString());
-		if (!tokenSet) {
-			tokenSet = new TokenSet(setAddress.toHexString());
-			tokenSet.set_ = setAddress.toHexString();
-
-			let components = set.components as Array<Bytes>;
-			tokenSet.underlyingSet = components[0].toHexString();
-			tokenSet.save();
-		}
-	}
-
 	// Mint
 	if (from == zeroAddress) {
 		let issuance = new Issuance(id);
