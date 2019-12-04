@@ -101,21 +101,23 @@ export function handleTransfer(event: TransferEvent): void {
 export function handleRebalanceStart(event: RebalanceStarted): void {
 	let id = event.transaction.hash.toHexString() + '-' + event.logIndex.toString();
 	let setAddress = event.address;
+	let oldSetAddress = event.params.oldSet;
+	let newSetAddress = event.params.newSet;
 
 	let rebalance = new Rebalance(id);
 	rebalance.set_ = setAddress.toHexString();
-	rebalance.oldSet = event.params.oldSet.toHexString();
-	rebalance.newSet = event.params.newSet.toHexString();
+	rebalance.oldSet = oldSetAddress.toHexString();
+	rebalance.newSet = newSetAddress.toHexString();
 	rebalance.timestamp = event.block.timestamp;
 	rebalance.save();
 
 	let set = Set.load(setAddress.toHexString());
-	set.components = [ event.params.newSet ];
+	set.components = [ newSetAddress ];
 	set.save();
 
 	let tokenSet = TokenSet.load(setAddress.toHexString());
 	if (tokenSet) {
-		tokenSet.underlyingSet = event.params.newSet.toHexString();
+		tokenSet.underlyingSet = newSetAddress.toHexString();
 		tokenSet.save();
 	}
 }
