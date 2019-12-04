@@ -1,9 +1,9 @@
-import { Address, BigInt, Bytes } from "@graphprotocol/graph-ts"
+import { Address, BigInt, Bytes } from "@graphprotocol/graph-ts";
 
-import { SetTokenCreated }  from "../generated/SetCore/SetCore"
-import { Set as SetContract } from "../generated/templates/Set/Set"
-import { Set as SetDataSource } from "../generated/templates"
-import { Set, TokenSet } from "../generated/schema"
+import { SetTokenCreated }  from "../generated/SetCore/SetCore";
+import { Set as SetContract } from "../generated/templates/Set/Set";
+import { Set as SetDataSource } from "../generated/templates";
+import { Set, TokenSet } from "../generated/schema";
 
 export function handleSetCreated(event: SetTokenCreated): void {
 	let address = event.params._setTokenAddress;
