@@ -11,7 +11,9 @@ import {
 let zeroAddress = Address.fromString('0x0000000000000000000000000000000000000000');
 
 export function handleTransfer(event: TransferEvent): void {
-	let id = event.transaction.hash.toHexString() + '-' + event.logIndex.toString();
+	let txHash = event.transaction.hash;
+	let eventIndex = event.logIndex;
+	let timestamp = event.block.timestamp;
 	let from = event.params.from;
 	let to  = event.params.to;
 	let value = event.params.value;
@@ -19,13 +21,14 @@ export function handleTransfer(event: TransferEvent): void {
 	let setAddress = event.address;
 	let set = Set.load(setAddress.toHexString());
 
+	let id = txHash.toHexString() + '-' + eventIndex.toString();
 	// Mint
 	if (from == zeroAddress) {
 		let issuance = new Issuance(id);
 		issuance.set_ = setAddress.toHexString();
 		issuance.amount = value;
 		issuance.account = to;
-		issuance.timestamp = event.block.timestamp;
+		issuance.timestamp = timestamp;
 		issuance.save();
 
 		let set = Set.load(setAddress.toHexString());
@@ -39,7 +42,7 @@ export function handleTransfer(event: TransferEvent): void {
 		redemption.set_ = setAddress.toHexString();
 		redemption.amount = value;
 		redemption.account = from;
-		redemption.timestamp = event.block.timestamp;
+		redemption.timestamp = timestamp;
 		redemption.save();
 
 		let set = Set.load(setAddress.toHexString());
@@ -54,7 +57,7 @@ export function handleTransfer(event: TransferEvent): void {
 		transfer.from = from;
 		transfer.to = to;
 		transfer.value = value;
-		transfer.timestamp = event.block.timestamp;
+		transfer.timestamp = timestamp;
 		transfer.save();
 	}
 
@@ -103,16 +106,19 @@ export function handleTransfer(event: TransferEvent): void {
 }
 
 export function handleRebalanceStart(event: RebalanceStarted): void {
-	let id = event.transaction.hash.toHexString() + '-' + event.logIndex.toString();
+	let txHash = event.transaction.hash;
+	let eventIndex = event.logIndex;
+	let timestamp = event.block.timestamp;
 	let setAddress = event.address;
 	let oldSetAddress = event.params.oldSet;
 	let newSetAddress = event.params.newSet;
 
+	let id = txHash.toHexString() + '-' + eventIndex.toString();
 	let rebalance = new Rebalance(id);
 	rebalance.set_ = setAddress.toHexString();
 	rebalance.oldSet = oldSetAddress.toHexString();
 	rebalance.newSet = newSetAddress.toHexString();
-	rebalance.timestamp = event.block.timestamp;
+	rebalance.timestamp = timestamp;
 	rebalance.save();
 
 	let set = Set.load(setAddress.toHexString());
