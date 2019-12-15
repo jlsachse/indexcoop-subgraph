@@ -34,7 +34,7 @@ export function handleSetCreated(event: SetTokenCreated): void {
 
 function _isTokenSet(address: Address): boolean {
 	let tokenSets: Array<String> = [
-		'0x136faE4333EA36A24bb751E2d505D6ca4Fd9f00b',
+		'0x136fae4333ea36a24bb751e2d505d6ca4fd9f00b',
 		'0x20649d97b1393105cf92a5083fd2aff7c99ebe56',
 		'0x2c5a9980b41861d91d30d0e0271d1c093452dca5',
 		'0x585c2cf94c41b528ec7329cbc3cde3c4f8d268db',
