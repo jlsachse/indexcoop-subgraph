@@ -52,6 +52,7 @@ function _isTokenSet(address: Address): boolean {
 		'0xb9ffe0b8ee2d1af94202ffed366520300748a4d8',
 		'0xbf70a33a13fbe8d0106df321da0cf654d2e9ab50',
 		'0xc06aec5191be16b94ffc97b6fc01393527367365',
+		'0xef0fda1d4bd73ddc2f93a4e46e2e5adbc2d668f4',
 		'0xf1e5f03086e1c0ce55e54cd8146bc9c28435346f',
 	];
 	return tokenSets.includes(address.toHexString());
