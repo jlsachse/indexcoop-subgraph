@@ -33,7 +33,7 @@ export function handleSetCreated(event: SetTokenCreated): void {
 }
 
 function _isTokenSet(address: Address): boolean {
-	let tokenSets: Array<String> = [
+	let roboSets: Array<String> = [
 		'0x136fae4333ea36a24bb751e2d505d6ca4fd9f00b',
 		'0x20649d97b1393105cf92a5083fd2aff7c99ebe56',
 		'0x2c5a9980b41861d91d30d0e0271d1c093452dca5',
@@ -56,5 +56,26 @@ function _isTokenSet(address: Address): boolean {
 		'0xef0fda1d4bd73ddc2f93a4e46e2e5adbc2d668f4',
 		'0xf1e5f03086e1c0ce55e54cd8146bc9c28435346f',
 	];
+	let socialSets: Array<String> = [
+		'0x09aE0c4c34A09875660E681FE1890F3b35175151',
+		'0x28c6a58c2a5d8c5f6681e07bfa0ada4bea14c9ee',
+		'0x5958107be1ecc8d0d1593b3d7cc75f5e48304682',
+		'0x73104e9d3Da91e410A6c211068f7BFfabBbD3e26',
+		'0x78e14b9a8d006ec7e23988a0a87263569c3f4839',
+		'0x7b8d9e95caa85d7905c3435da1ba9fa7f79bf4fa',
+		'0x8D66DF717FAF06c07b5D3E53FFD3eA66D612e150',
+		'0x90f49083ff588ec5a5459F4D2A64B8D409C03122',
+		'0xabc754ac2161b557d28062f41dcc0fc18440ac7e',
+		'0xaC6560DF686F3ac7039B0DD6867C874c99D9dA06',
+		'0xb272422B7d07B94859AD61E4435c6d5087f308de',
+		'0xB8243B4eeca27A4191e879760b88fE2270561796',
+		'0xCf50bc1442A50D1756b34119fE1E26325Aa648e3',
+		'0xd235e29b1dd177cd74f2955d081204a6cd04515e',
+		'0xdbf5c7d8ac5007667617a15db2c1b1d616c9d302',
+		'0xdc5bbcf8189a69337f693a9f3f63ae37789ede92',
+		'0xe33a35fd5cad21ce72ebbc8a2885bdd0983de043',
+		'0xe86811516F9E46F6F2a8a19754c893deD414D682',
+	];
+	let tokenSets = roboSets.concat(socialSets);
 	return tokenSets.includes(address.toHexString());
 }
