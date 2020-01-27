@@ -375,6 +375,28 @@
     "type": "event"
   },
   {
+    "anonymous": false,
+    "inputs": [{
+      "indexed": false,
+      "name": "oldSet",
+      "type": "address"
+    }, {
+      "indexed": false,
+      "name": "newSet",
+      "type": "address"
+    }, {
+      "indexed": false,
+      "name": "rebalanceIndex",
+      "type": "uint256"
+    }, {
+      "indexed": false,
+      "name": "currentSetQuantity",
+      "type": "uint256"
+    }],
+    "name": "RebalanceStarted",
+    "type": "event"
+  },
+  {
     "constant": false,
     "inputs": [
       {
