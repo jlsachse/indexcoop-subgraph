@@ -22,6 +22,8 @@ templates:
           handler: handleTransfer
         - event: RebalanceStarted(address,address)
           handler: handleRebalanceStart
+        - event: RebalanceStarted(address,address,uint256,uint256)
+          handler: handleRebalanceStart
       callHandlers:
         - function: settleRebalance()
           handler: handleRebalanceSettle
