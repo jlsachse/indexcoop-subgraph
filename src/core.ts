@@ -34,6 +34,7 @@ export function handleSetCreated(event: SetTokenCreated): void {
 
 function _isTokenSet(address: Address): boolean {
 	let roboSets: Array<String> = [
+		'0x0329d23fc7b1b1e6cca57afa3f0090f1189069e8',
 		'0x136fae4333ea36a24bb751e2d505d6ca4fd9f00b',
 		'0x20649d97b1393105cf92a5083fd2aff7c99ebe56',
 		'0x2c5a9980b41861d91d30d0e0271d1c093452dca5',
