@@ -44,6 +44,7 @@ function _isTokenSet(address: Address): boolean {
 		'0x6123a0cbc95cb157995a0795187a60995b85e0a9',
 		'0x614857c755739354d68ae0abd53849cf45d6a41d',
 		'0x81c55017f7ce6e72451ced49ff7bab1e3df64d0c',
+		'0x8933ea1ce67b946bdf2436ce860ffbb53ce814d2',
 		'0x8ddc86dba7ad728012efc460b8a168aba60b403b',
 		'0x93e01899c10532d76c0e864537a1d26433dbbddb',
 		'0x9ea463ec4ce9e9e5bc9cfd0187c4ac3a70dd951d',
