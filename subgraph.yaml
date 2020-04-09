@@ -9,7 +9,7 @@ templates:
       abi: Set
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.3
+      apiVersion: 0.0.4
       language: wasm/assemblyscript
       file: ./src/set.ts
       entities:
@@ -36,7 +36,7 @@ dataSources:
       abi: SetCore
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.3
+      apiVersion: 0.0.4
       language: wasm/assemblyscript
       entities:
         - Set
