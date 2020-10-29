@@ -1,39 +1,36 @@
-specVersion: 0.0.2
+specVersion: 0.0.1
 schema:
   file: ./schema.graphql
 templates:
-  - name: Set
+    # Template for all indeces
+  - name: Index
     kind: ethereum/contract
     network: mainnet
     source:
-      abi: Set
+      abi: Index # ABI for Sets
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: ./src/set.ts
+      file: ./src/index.ts
       entities:
-        - Set
+        - Index
       abis:
-        - name: Set
-          file: ./abis/Set.json
+        - name: Index
+          file: ./abis/Index.json
       eventHandlers:
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleTransfer
-        - event: RebalanceStarted(address,address)
-          handler: handleRebalanceStart
-        - event: RebalanceStarted(address,address,uint256,uint256)
-          handler: handleRebalanceStart
-      callHandlers:
-        - function: settleRebalance()
-          handler: handleRebalanceSettle
+
 dataSources:
+  # Data source for the creation of indeces
   - kind: ethereum/contract
-    name: SetCore
+    name: Controller
     network: mainnet
     source:
-      address: "0xf55186CC537E7067EA616F2aaE007b4427a120C8"
-      abi: SetCore
+      address: "0xa4c8d221d8BB851f83aadd0223a8900A6921A349"
+      # address on Kovan: "0x9048278cA7e874F9338e4898C436Ab07AA454701"
+      abi: Controller
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -41,11 +38,60 @@ dataSources:
       entities:
         - Set
       abis:
-        - name: SetCore
-          file: ./abis/SetCore.json
+        - name: Controller
+          file: ./abis/Controller.json
         - name: Set
-          file: ./abis/Set.json
+          file: ./abis/Index.json
       eventHandlers:
-        - event: SetTokenCreated(indexed address,address,address[],uint256[],uint256,bytes32,bytes32)
-          handler: handleSetCreated
-      file: ./src/core.ts
+        - event: SetAdded(indexed address,indexed address)
+          handler: handleIndexCreated
+      file: ./src/controller.ts
+
+    # Data source for the issuance and redemption of indece tokens
+  - kind: ethereum/contract
+    name: BasicIssuanceModule
+    network: mainnet
+    source:
+      address: "0xd8EF3cACe8b4907117a45B0b125c68560532F94D"
+      # address on Kovan: "0x8a070235a4B9b477655Bf4Eb65a1dB81051B3cC1"
+      abi: BasicIssuanceModule
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Set
+        - User
+      abis:
+        - name: BasicIssuanceModule
+          file: ./abis/BasicIssuanceModule.json
+      eventHandlers:
+        - event: SetTokenIssued(indexed address,indexed address,indexed address,uint256)
+          handler: handleTokensIssued
+        - event: SetTokenRedeemed(indexed address,indexed address,indexed address,uint256)
+          handler: handleTokensRedeemed
+      file: ./src/issuance.ts
+
+    # Data source for rebalances
+  - kind: ethereum/contract
+    name: TradeModule
+    network: mainnet
+    source:
+      address: "0xd8EF3cACe8b4907117a45B0b125c68560532F94D"
+      # address on Kovan: "0xC93c8CDE0eDf4963ea1eea156099B285A945210a"
+      abi: TradeModule
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Rebalance
+      abis:
+        - name: TradeModule
+          file: ./abis/TradeModule.json
+      eventHandlers:
+        - event: ComponentExchanged(indexed ISetToken,indexed address,indexed address,IExchangeAdapter,uint256,uint256,uint256)
+          handler: handleRebalance
+      file: ./src/rebalance.ts
+
+
