@@ -1,11 +1,11 @@
-type TokenSet @entity {
+type TokenIndex @entity {
 	id: ID!
-	set_: Set!
-	underlyingSet: Set!
-	rebalances: [Rebalance!] @derivedFrom(field: "set_")
+	index_: Index!
+	underlyingSet: Index!
+	rebalances: [Rebalance!] @derivedFrom(field: "index_")
 }
 
-type Set @entity {
+type Index @entity {
 	id: ID!
 	address: Bytes!
 	name: String!
@@ -14,13 +14,13 @@ type Set @entity {
 	components: [Bytes!]
 	units: [BigInt!]
 	naturalUnit: BigInt!
-	issuances: [Issuance!] @derivedFrom(field: "set_")
-	redemptions: [Redemption!] @derivedFrom(field: "set_")
+	issuances: [Issuance!] @derivedFrom(field: "index_")
+	redemptions: [Redemption!] @derivedFrom(field: "index_")
 }
 
 type Issuance @entity {
 	id: ID!
-	set_: Set!
+	index_: Index!
 	account: Bytes!
 	amount: BigInt!
 	timestamp: BigInt!
@@ -28,7 +28,7 @@ type Issuance @entity {
 
 type Redemption @entity {
 	id: ID!
-	set_: Set!
+	index_: Index!
 	account: Bytes!
 	amount: BigInt!
 	timestamp: BigInt!
@@ -36,7 +36,7 @@ type Redemption @entity {
 
 type Transfer @entity {
 	id: ID!
-	set_: Set!
+	index_: Index!
 	from: Bytes!
 	to: Bytes!
 	value: BigInt!
@@ -45,15 +45,15 @@ type Transfer @entity {
 
 type Rebalance @entity {
 	id: ID!
-	set_: TokenSet!
-	oldSet: Set!
-	newSet: Set!
+	index_: TokenIndex!
+	oldIndex: Index!
+	newIndex: Index!
 	timestamp: BigInt!
 }
 
 type Balance @entity {
 	id: ID!
-	set_: TokenSet!
+	index_: TokenIndex!
 	user: User!
 	balance: BigInt!
 }
