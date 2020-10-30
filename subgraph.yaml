@@ -2,7 +2,7 @@ specVersion: 0.0.1
 schema:
   file: ./schema.graphql
 templates:
-    # Template for all indeces
+    # Template for all indices
   - name: Index
     kind: ethereum/contract
     network: mainnet
@@ -23,7 +23,7 @@ templates:
           handler: handleTransfer
 
 dataSources:
-  # Data source for the creation of indeces
+  # Data source for the creation of indices
   - kind: ethereum/contract
     name: Controller
     network: mainnet
@@ -47,7 +47,7 @@ dataSources:
           handler: handleIndexCreated
       file: ./src/controller.ts
 
-    # Data source for the issuance and redemption of indece tokens
+    # Data source for the issuance and redemption of index tokens
   - kind: ethereum/contract
     name: BasicIssuanceModule
     network: mainnet
